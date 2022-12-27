@@ -72,6 +72,9 @@ impl Appointment {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
+
+   let client1 = connect().await.unwrap();
+
    // Load the MongoDB connection string from an environment variable:
    let client_uri =
       env::var("MONGODB_URI").expect("You must set the MONGODB_URI environment var!");
