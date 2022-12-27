@@ -22,6 +22,8 @@ use crate::model::uam::User;
 use crate::model::code::ActiveStatus;
 pub mod model; // declared in \model\mod.rs
 
+use crate::sys::db::connect;
+pub mod sys;
 
 // struct
 // new type idiom
