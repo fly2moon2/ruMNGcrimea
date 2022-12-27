@@ -17,8 +17,10 @@ use mongodb::bson::doc;
 
 // mod
 // https://dev.to/hackmamba/build-a-rest-api-with-rust-and-mongodb-rocket-version-ah5
+// https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html
 use crate::model::uam::User;
-pub mod model;
+pub mod model; // declared in \model\mod.rs
+
 use crate::db::ActiveStatus;
 pub mod db;
 
