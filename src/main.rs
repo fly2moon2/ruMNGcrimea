@@ -15,6 +15,13 @@ use tokio;
 use chrono::{TimeZone, Utc};
 use mongodb::bson::doc;
 
+// mod
+// https://dev.to/hackmamba/build-a-rest-api-with-rust-and-mongodb-rocket-version-ah5
+use crate::models::model_usr::User;
+pub mod models;
+use crate::db::ActiveStatus;
+pub mod db;
+
 // struct
 // new type idiom
 #[derive(Debug)]
@@ -37,6 +44,25 @@ impl Person {
          sex: Sex(String::from("F")),
          dob: String::from("dob"),
          data: Vec::new(),
+      }
+   }
+}
+
+
+
+//#[derive(Debug)]
+struct Appointment {
+   client: Person,
+   date: String,
+   active_status: ActiveStatus,
+}
+
+impl Appointment {
+   fn new(client: Person)->Appointment{
+      Appointment {
+         client: client,
+         date: String::from("dates"),
+         active_status: ActiveStatus::Active,
       }
    }
 }
@@ -131,6 +157,22 @@ async fn main() -> Result<(), Box<dyn Error>> {
       None,
    ).await?;
    println!("Deleted {} documents", del_rslt1.deleted_count);
+
+   // struct to doc/2-tier
+   //let person=Person::new("Arigato");
+   let appt_pers1=Person::new("Appt Person1");
+   let appt1=Appointment::new(appt_pers1);
+   
+   let doc_appt_pers1 = doc! {
+      "name": "appt_pers1.name",
+   };
+   let doc_appt1=doc!{
+      "client": doc_appt_pers1,
+      "date": appt1.date,
+      "status": "appt1.active_status",
+   };
+   let rslt_appt1 = soldiers.insert_one(doc_appt1.clone(), None).await?;
+
 
    Ok(())
 }
