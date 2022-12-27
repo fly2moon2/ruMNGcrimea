@@ -17,8 +17,8 @@ use mongodb::bson::doc;
 
 // mod
 // https://dev.to/hackmamba/build-a-rest-api-with-rust-and-mongodb-rocket-version-ah5
-use crate::models::model_usr::User;
-pub mod models;
+use crate::model::uam::User;
+pub mod model;
 use crate::db::ActiveStatus;
 pub mod db;
 
