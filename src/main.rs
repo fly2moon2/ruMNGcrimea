@@ -19,10 +19,9 @@ use mongodb::bson::doc;
 // https://dev.to/hackmamba/build-a-rest-api-with-rust-and-mongodb-rocket-version-ah5
 // https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html
 use crate::model::uam::User;
+use crate::model::code::ActiveStatus;
 pub mod model; // declared in \model\mod.rs
 
-use crate::db::ActiveStatus;
-pub mod db;
 
 // struct
 // new type idiom
@@ -82,6 +81,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
          .await?;
    let client = Client::with_options(options)?;
 
+   // client implements std::sync::Arc, can use clone()
+   // https://mongodb.github.io/mongo-rust-driver/manual/connecting.html
+   //let client1 = client.clone();
+
    // Print the databases in our MongoDB cluster:
    println!("Databases:");
    for name in client.list_database_names(None, None).await? {
@@ -95,7 +98,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
    // Look up one document:
    let soldier: Document = soldiers.find_one(
       doc! {
-            "sex": "F"
+            "sex": "M"
       },
       None,
    ).await?
@@ -153,7 +156,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
    // delete many
    let del_rslt1 = soldiers.delete_many(
       doc! {
-         "title": "The Great Gatsby"
+         //"title": "The Great Gatsby"
+        // "sex":{$ne:"F"}
+        "sex":null
          //$or: [{"title":"1984"},{"title":"The Great Gatsby"}]
       },
       None,
